@@ -1,0 +1,29 @@
+#!/bin/sh
+set -ef
+baseurl="$1"
+[ -z "$baseurl" ] && { echo >&2 "$0 <base url>"; exit 1; }
+
+histfile=${NFM_HISTFILE="$HOME/.cache/nfm_history"}
+previous=$(tail -n1 "$histfile" 2> /dev/null || true)
+[ -z "$previous" ] && url="$baseurl" || url=$(dirname "$baseurl$previous")"/"
+
+while true; do
+	resp=$(curl -fsg "$url" || { echo >&2 "curl get failed"; exit 1; })
+	lines=$(echo "$resp" | jq -r '.[] | .name + (if .type == "directory" then "/" else "" end)')
+	previdx=$(echo "$lines" | grep -Fxn "$(basename "$previous")" | cut -d : -f 1)
+	if [ "$url" != "$baseurl" ]; then
+		lines="..
+$lines"
+	fi
+	sel=$(echo "$lines" | $NFM_MENU "$previdx")
+	if [ "$sel" = ".." ]; then
+		url=$(dirname "$url")"/"
+	else
+		url="$url$sel"
+		if [ "$(echo "$sel" | tail -c2)" != "/" ]; then
+			echo "${url##"$baseurl"}" >> "$histfile"
+			$NFM_OPENER "$url"
+			exit
+		fi
+	fi
+done

@@ -1,0 +1,8 @@
+#!/bin/bash
+nfm_rofi_fn() {
+	rofi -dmenu -selected-row "$1"
+}
+export -f nfm_rofi_fn
+while true; do
+	NFM_MENU=nfm_rofi_fn NFM_OPENER=mpv nfm '<your url>' || break
+done
