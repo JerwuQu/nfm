@@ -8,7 +8,11 @@ previous=$(tail -n1 "$histfile" 2> /dev/null || true)
 [ -z "$previous" ] && url="$baseurl" || url=$(dirname "$baseurl$previous")"/"
 
 while true; do
-	resp=$(curl -fsg "$url" || { echo >&2 "curl get failed"; exit 1; })
+	resp=$(curl -fsg "$url") || {
+		echo >&2 'curl get failed, trying again without history'
+		url="$baseurl"
+		resp=$(curl -fsg "$url") || { echo >&2 'curl get failed again, giving up'; exit 1; }
+	}
 	lines=$(echo "$resp" | jq -r '.[] | .name + (if .type == "directory" then "/" else "" end)')
 	previdx=$(echo "$lines" | grep -Fxn "$(basename "$previous")" | cut -d : -f 1)
 	if [ "$url" != "$baseurl" ]; then
