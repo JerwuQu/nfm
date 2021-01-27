@@ -21,9 +21,9 @@ $lines"
 	fi
 	sel=$(echo "$lines" | $NFM_MENU "$previdx")
 	if [ "$sel" = ".." ]; then
-		url=$(dirname "$url")"/"
+		url=$(dirname "$url" | sed 's/ /%20/g')"/"
 	else
-		url="$url$sel"
+		url="$url$(echo "$sel" | sed 's/ /%20/g')"
 		if [ "$(echo "$sel" | tail -c2)" != "/" ]; then
 			echo "${url##"$baseurl"}" >> "$histfile"
 			$NFM_OPENER "$url"
