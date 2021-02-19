@@ -26,8 +26,8 @@ location /files.json/ {
 
 *Don't forget to use HTTPS!*
 
-You can use [nfm-rofi-example](https://github.com/JerwuQu/nfm/blob/master/nfm-rofi-example) as a template to try it out.
-It expects a url in the form `https://username:password@your.host/files.json/`.
+You can use [nfm-rofi-mpv-example](https://github.com/JerwuQu/nfm/blob/master/nfm-rofi-mpv-example) or [nfm-fzf-curl-example](https://github.com/JerwuQu/nfm/blob/master/nfm-fzf-curl-example) as templates to try it out.
+nfm expects a url in the form `https://username:password@your.host/files.json/`.
 
 ## ...
 

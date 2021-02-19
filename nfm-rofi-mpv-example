@@ -4,5 +4,5 @@ nfm_rofi_fn() {
 }
 export -f nfm_rofi_fn
 while true; do
-	NFM_MENU=nfm_rofi_fn NFM_OPENER=mpv nfm '<your url>' || break
+	NFM_MENU=nfm_rofi_fn NFM_OPENER=mpv nfm 'your url' || break
 done

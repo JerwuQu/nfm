@@ -1,4 +1,4 @@
-SCRIPTS=nfm nfm-rofi-example
+SCRIPTS=nfm nfm-rofi-mpv-example nfm-fzf-curl-example
 
 .PHONY: check
 check: $(SCRIPTS)

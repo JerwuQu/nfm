@@ -1,0 +1,12 @@
+#!/bin/bash
+nfm_fzf_fn() {
+	fzf --reverse # NOTE: fzf doesn't support "selected index", otherwise we'd use $1
+}
+export -f nfm_fzf_fn
+nfm_dl_fn() {
+	curl -gOL "$1"
+}
+export -f nfm_dl_fn
+while true; do
+	NFM_MENU=nfm_fzf_fn NFM_OPENER=nfm_dl_fn nfm 'your url' || break
+done
