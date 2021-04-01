@@ -17,11 +17,14 @@ while true; do
 	previdx=$(echo "$lines" | sed 's/ /%20/g' | grep -Fxn "$(basename "$previous")" | cut -d : -f 1)
 	if [ "$url" != "$baseurl" ]; then
 		lines="..
-$lines"
+$lines
+/"
 	fi
 	sel=$(echo "$lines" | $NFM_MENU "$previdx")
 	if [ "$sel" = ".." ]; then
 		url=$(dirname "$url" | sed 's/ /%20/g')"/"
+	elif [ "$sel" = "/" ]; then
+		url="$baseurl"
 	else
 		url="$url$(echo "$sel" | sed 's/ /%20/g')"
 		if [ "$(echo "$sel" | tail -c2)" != "/" ]; then
