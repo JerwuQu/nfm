@@ -16,9 +16,10 @@ while true; do
 	lines=$(echo "$resp" | jq -r '.[] | .name + (if .type == "directory" then "/" else "" end)')
 	previdx=$(echo "$lines" | sed 's/ /%20/g' | grep -Fxn "$(basename "$previous")" | cut -d : -f 1)
 	if [ "$url" != "$baseurl" ]; then
+		[ -z "$lines" ] || lines="$lines
+"
 		lines="..
-$lines
-/"
+$lines/"
 	fi
 	sel=$(echo "$lines" | $NFM_MENU "$previdx")
 	if [ "$sel" = ".." ]; then
