@@ -14,6 +14,7 @@ while true; do
 		resp=$(curl -fsg "$url") || { echo >&2 'curl get failed again, giving up'; exit 1; }
 	}
 	lines=$(echo "$resp" | jq -r '.[] | .name + (if .type == "directory" then "/" else "" end)')
+	[ -z "$NFM_FILTER" ] || lines=$(echo "$lines" | $NFM_FILTER)
 	previdx=$(echo "$lines" | sed 's/ /%20/g' | grep -Fxn "$(basename "$previous")" | cut -d : -f 1)
 	if [ "$url" != "$baseurl" ]; then
 		[ -z "$lines" ] || lines="$lines
